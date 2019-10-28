@@ -1,3 +1,10 @@
+# me
+## adb 获取 hprof
+```
+adb shell am dumpheap  com.xxx.xxx data/local/tmp/1.hprof
+adb pull data/local/tmp/1.hprof 1.hprof
+```
+
 # Chapter04
 终于迎来了第一个课后作业，今天我们尝试通过分析内存文件hprof快速判断内存中是否存在重复的图片，并且将这些重复图片的PNG、堆栈等信息输出。
 
@@ -77,8 +84,4 @@ ArrayInstance buffer = HahaHelper.fieldValue(((ClassInstance) bitmapInstance).ge
 
 最终结果也会在极客时间和repo中公布，欢迎大家积极参与！
 
-# me
-```
-adb shell am dumpheap  com.xxx.xxx data/local/tmp/1.hprof
-adb pull data/local/tmp/1.hprof 1.hprof
-```
+
