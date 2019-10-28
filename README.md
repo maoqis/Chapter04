@@ -74,3 +74,9 @@ ArrayInstance buffer = HahaHelper.fieldValue(((ClassInstance) bitmapInstance).ge
 根据项目质量和提交pull request的时间，抽取部分同学送上经典书籍。
 
 最终结果也会在极客时间和repo中公布，欢迎大家积极参与！
+
+# me
+```
+adb shell am dumpheap  com.xxx.xxx data/local/tmp/1.hprof
+adb pull data/local/tmp/1.hprof 1.hprof
+```

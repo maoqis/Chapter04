@@ -1,10 +1,37 @@
 package com.hprof.bitmap;
 
-import java.io.FileInputStream;
+import com.squareup.haha.perflib.ArrayInstance;
+import com.squareup.haha.perflib.ClassInstance;
+import com.squareup.haha.perflib.ClassObj;
+import com.squareup.haha.perflib.Heap;
+import com.squareup.haha.perflib.HprofParser;
+import com.squareup.haha.perflib.Instance;
+import com.squareup.haha.perflib.Snapshot;
+import com.squareup.haha.perflib.io.HprofBuffer;
+import com.squareup.haha.perflib.io.MemoryMappedFileBuffer;
+import com.squareup.leakcanary.AnalysisResult;
+import com.squareup.leakcanary.AnalyzerProgressListener;
+import com.squareup.leakcanary.ExcludedRefs;
+import com.squareup.leakcanary.HeapAnalyzer;
+import com.squareup.leakcanary.Reachability;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
+import java.lang.reflect.Method;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
+
+import sun.misc.BASE64Encoder;
 
 public class Main {
 
@@ -58,11 +85,11 @@ public class Main {
                 continue;
             }
 
-            ArrayInstance buffer = HahaHelper.fieldValue(((ClassInstance) instance).getValues(), "mBuffer");
+
             Integer height = HahaHelper.fieldValue(((ClassInstance) instance).getValues(), "mHeight");
             Integer width = HahaHelper.fieldValue(((ClassInstance) instance).getValues(), "mWidth");
 
-
+            ArrayInstance buffer = HahaHelper.fieldValue(((ClassInstance) instance).getValues(), "mBuffer");
             Class<?> personType = buffer.getClass();
             Method method = personType.getDeclaredMethod("asRawByteArray", int.class, int.class);
             method.setAccessible(true);
@@ -89,7 +116,9 @@ public class Main {
                 ReportBean reportBean = counter.get(hash);
                 reportBean.setDuplcateCount(reportBean.getDuplcateCount() + 1);
 
-
+                if (reportBean.getDuplcateCount()>1){
+                    continue;
+                }
                 // 保存图片
                 String pngfilePathDir = heapDumpFile.getParent()
                         + File.separator + "images";
